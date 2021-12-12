@@ -41,7 +41,7 @@ describe 'application show page' do
     expect(page).to have_content(@pet3.name)
   end
 
-  it '' do
+  it 'adds pet after clicking adopt this pet' do
     fill_in('Pet name', with: "#{@pet2.name}")
     click_button "Search"
 

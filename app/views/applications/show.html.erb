@@ -14,5 +14,5 @@
 <% end %>
 <% @pets.each do |pet| %>
   <%= link_to "#{pet.name}", "/pets/#{pet.id}"  %>
-  <%= button_to "Adopt this Pet", "/applications/#{@application.id}", method: :patch %>
+  <%= button_to "Adopt this Pet", "/pet_applications/new", method: :post, params: { :application_id => @application.id, :pet_id => pet.id } %>
 <% end %>
