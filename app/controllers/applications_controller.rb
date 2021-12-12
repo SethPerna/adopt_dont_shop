@@ -1,11 +1,16 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
-    @pets = @application.pets
+
+    if params[:pet_name].present?
+      @pets = Pet.search(params[:name])
+    else
+      @pets = @application.pets
+    end
   end
 
   def new
-    
+
   end
 
   def create
@@ -17,6 +22,8 @@ class ApplicationsController < ApplicationController
       redirect_to '/applications/new'
     end
   end
+
+
 
   private
   def application_params
