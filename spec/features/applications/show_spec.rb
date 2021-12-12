@@ -4,6 +4,7 @@ describe 'application show page' do
     @shelter1 = Shelter.create!(foster_program: true, name:" Shelter ", city: "Denver", rank: 2)
     @pet1 = @shelter1.pets.create!(adoptable: true, age: 5, breed:"Pitt Bull", name:"Penelope")
     @pet2 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Husky X", name:"Lily")
+    @pet3 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Husky X", name:"Bruno")
     @application1 = Application.create!(name:'Seth', address: '123 test st', city: 'Denver', state: 'Colorado', zip: '22835', description: "Gimme the doggos", status: 'in progress' )
     @application_pet = PetApplication.create!(pet_id: @pet1.id, application_id: @application1.id)
     visit "/applications/#{@application1.id}"
@@ -34,5 +35,9 @@ describe 'application show page' do
     click_button "Search"
     expect(current_path).to eq("/applications/#{@application1.id}")
     expect(page).to have_content(@pet2.name)
+    fill_in('Pet name', with: "#{@pet3.name}")
+    click_button "Search"
+    expect(current_path).to eq("/applications/#{@application1.id}")
+    expect(page).to have_content(@pet3.name)
   end
 end
