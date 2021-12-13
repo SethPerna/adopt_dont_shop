@@ -5,6 +5,13 @@ class ApplicationsController < ApplicationController
     if params[:pet_name].present?
       @pets = Pet.search(params[:pet_name])
     end
+
+    @selected_pets = @application.pets
+    if params[:description]
+      @application.update({description: params[:description]})
+      @application.save
+    end
+    @application.update_status
   end
 
   def new
@@ -16,7 +23,7 @@ class ApplicationsController < ApplicationController
     if application.save
       redirect_to "/applications/#{application.id}"
     else
-      flash[:alert] = "Error: Name can't be blank, Address can't be blank, City can't be blank, State can't be blank, Zip can't be blank, Description can't be blank"
+      flash[:alert] = "Error: Name can't be blank, Address can't be blank, City can't be blank, State can't be blank, Zip can't be blank"
       redirect_to '/applications/new'
     end
   end
