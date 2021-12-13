@@ -90,5 +90,20 @@ describe 'application show page' do
     expect(page).to have_content("Status: Pending")
     expect(page).to_not have_content("Status: In Progress")
     expect(page).to_not have_button("Search")
+    expect(page).to_not have_button("Submit my application")
+  end
+
+  it 'when I search pets it returns all pets wohse name partially matches the search' do
+    @shelter1 = Shelter.create!(foster_program: true, name:" Shelter ", city: "Denver", rank: 2)
+    @pet1 = @shelter1.pets.create!(adoptable: true, age: 5, breed:"Pitt Bull", name:"Penelope")
+    @pet2 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Husky X", name:"Lily")
+    @pet3 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Husky X", name:"Lilac")
+    @pet4 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Basset", name:"Herb")
+    @application1 = Application.create!(name:'Seth', address: '123 test st', city: 'Denver', state: 'Colorado', zip: '22835' )
+    visit "/applications/#{@application1.id}"
+    fill_in('Pet name', with: "Li")
+    click_button("Search")
+    expect(page).to have_content(@pet2.name)
+    expect(page).to have_content(@pet3.name)
   end
 end
