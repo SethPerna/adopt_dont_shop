@@ -29,7 +29,7 @@ describe 'When I visit admin application show page' do
     @application_2 = Application.create!(name:'John', address: '123 test st', city: 'Denver', state: 'Colorado', zip: '22835', description: 'Bye', status: 'Pending')
     @application_pet = PetApplication.create!(pet_id: @pet1.id, application_id: @application_1.id)
     visit "/admin/applications/#{@application_1.id}"
-    save_and_open_page
+
     click_button("Approve #{@pet1.name}")
     expect(current_path).to eq("/admin/applications/#{@application_1.id}")
   end
@@ -49,5 +49,23 @@ describe 'When I visit admin application show page' do
     expect(current_path).to eq("/admin/applications/#{@application_1.id}")
     expect(page).to_not have_button("Approve #{@pet1.name}")
     expect(page).to have_content("Approved Pets: #{@pet1.name}")
+  end
+
+  it 'denies pets if deny button is clicked and I see an indicator that the pet has been denied' do
+    @shelter1 = Shelter.create!(foster_program: true, name:" Shelter ", city: "Denver", rank: 2)
+    @pet1 = @shelter1.pets.create!(adoptable: true, age: 5, breed:"Pitt Bull", name:"Penelope")
+    @pet2 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Husky X", name:"Lily")
+    @pet3 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Husky X", name:"Bruno")
+    @pet4 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Basset", name:"Herb")
+    @application_1 = Application.create!(name:'Seth', address: '123 test st', city: 'Denver', state: 'Colorado', zip: '22835', description: 'Hello', status: 'Pending')
+    @application_2 = Application.create!(name:'John', address: '123 test st', city: 'Denver', state: 'Colorado', zip: '22835', description: 'Bye', status: 'Pending')
+    @application_pet = PetApplication.create!(pet_id: @pet1.id, application_id: @application_1.id)
+    visit "/admin/applications/#{@application_1.id}"
+
+    expect(page).to have_button("Deny #{@pet1.name}")
+    click_button("Deny #{@pet1.name}")
+    expect(current_path).to eq("/admin/applications/#{@application_1.id}")
+    expect(page).to_not have_button("Deny #{@pet1.name}")
+    expect(page).to have_content("Denied Pets: #{@pet1.name}")
   end
 end

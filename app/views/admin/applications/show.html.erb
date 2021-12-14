@@ -1,6 +1,21 @@
 <h1>Pending Applications:</h1>
 <p>Pets: <% @application.pets.each do |pet| %>
   <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
-  <%= button_to "Approve #{pet.name}", "/admin/applications/#{@application.id}", method: :patch %>
+  <% if @application.status == "Pending" %>
+    <%= button_to "Approve #{pet.name}", "/admin/applications/#{@application.id}", method: :patch %>
+    <%= button_to "Deny #{pet.name}", "/admin/applications/#{@application.id}", method: :patch %>
+  <% end %>
 <% end %></p>
-<p>Approved Pets: </p>
+<p>Approved Pets:
+  <% if @application.status == "Approved" %>
+    <% @application.pets.each do |pet| %>
+    <%= pet.name %>
+  <% end %>
+<% end %> </p>
+<p>Denied Pets:
+  <% if @application.status == "Denied" %>
+    <% @application.pets.each do |pet| %>
+    <%= pet.name %>
+  <% end %>
+<% end %>
+</p>
