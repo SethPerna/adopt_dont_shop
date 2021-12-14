@@ -1,0 +1,6 @@
+<h1>Pending Applications:</h1>
+<p>Pets: <% @application.pets.each do |pet| %>
+  <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
+  <%= button_to "Approve #{pet.name}", "/admin/applications/#{@application.id}", method: :patch %>
+<% end %></p>
+<p>Approved Pets: </p>
