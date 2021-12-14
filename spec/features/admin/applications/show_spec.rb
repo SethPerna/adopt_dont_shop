@@ -1,6 +1,6 @@
 require 'rails_helper'
-describe 'Wehn I visit admin application show page' do
-  it 'for every pet that has an application I see a button to approve that specific pet' do
+describe 'When I visit admin application show page' do
+  it 'for every submitted application for pet(s) I see a button to approve that specific pet' do
     @shelter1 = Shelter.create!(foster_program: true, name:" Shelter ", city: "Denver", rank: 2)
     @pet1 = @shelter1.pets.create!(adoptable: true, age: 5, breed:"Pitt Bull", name:"Penelope")
     @pet2 = @shelter1.pets.create!(adoptable: true, age: 3, breed:"Husky X", name:"Lily")
@@ -29,7 +29,7 @@ describe 'Wehn I visit admin application show page' do
     @application_2 = Application.create!(name:'John', address: '123 test st', city: 'Denver', state: 'Colorado', zip: '22835', description: 'Bye', status: 'Pending')
     @application_pet = PetApplication.create!(pet_id: @pet1.id, application_id: @application_1.id)
     visit "/admin/applications/#{@application_1.id}"
-
+    save_and_open_page
     click_button("Approve #{@pet1.name}")
     expect(current_path).to eq("/admin/applications/#{@application_1.id}")
   end
