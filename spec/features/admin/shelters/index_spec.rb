@@ -25,7 +25,6 @@ describe 'Admin/shelter/index page' do
       pet_application_1 = PetApplication.create!(pet_id: @pet_1.id, application_id: application_1.id)
       pet_application_2 = PetApplication.create!(pet_id: @pet_3.id, application_id: application_2.id)
       visit '/admin/shelters'
-      save_and_open_page
       expect(page).to have_content("Shelters with pending applications: #{@shelter_1.name} #{@shelter_3.name}")
     end
   end
