@@ -61,7 +61,7 @@ describe 'When I visit admin application show page' do
     @application_2 = Application.create!(name:'John', address: '123 test st', city: 'Denver', state: 'Colorado', zip: '22835', description: 'Bye', status: 'Pending')
     @application_pet = PetApplication.create!(pet_id: @pet1.id, application_id: @application_1.id)
     visit "/admin/applications/#{@application_1.id}"
-
+    save_and_open_page
     expect(page).to have_button("Deny #{@pet1.name}")
     click_button("Deny #{@pet1.name}")
     expect(current_path).to eq("/admin/applications/#{@application_1.id}")
